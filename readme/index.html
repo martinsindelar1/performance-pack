@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup Guide — Self-Updating Performance Pack Dashboard</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel-2:#1c2330; --border:#30363d;
+    --text:#e6edf3; --muted:#9aa7b4; --accent:#7c9cff; --accent-2:#56d364;
+    --warn:#e3b341; --danger:#f78166; --code-bg:#0b0f15; --chip:#21262d;
+    --radius:14px; --maxw:920px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:radial-gradient(1200px 600px at 70% -10%, #1b2540 0%, var(--bg) 55%);
+    color:var(--text); font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px 120px}
+
+  /* HERO */
+  header.hero{
+    max-width:var(--maxw); margin:0 auto; padding:64px 22px 30px;
+  }
+  .eyebrow{display:inline-block; font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); background:rgba(124,156,255,.12); border:1px solid rgba(124,156,255,.3);
+    padding:6px 12px; border-radius:999px; margin-bottom:20px}
+  h1{font-size:40px; line-height:1.15; margin:0 0 14px; letter-spacing:-.02em}
+  .lede{font-size:18px; color:var(--muted); max-width:680px; margin:0}
+  .meta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px}
+  .chip{background:var(--chip); border:1px solid var(--border); color:var(--text);
+    padding:7px 13px; border-radius:999px; font-size:13.5px; display:inline-flex; gap:7px; align-items:center}
+  .chip b{color:var(--accent-2); font-weight:600}
+
+  /* WHAT YOU BUILD diagram */
+  .blueprint{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:26px; margin:34px 0 10px}
+  .blueprint h3{margin:0 0 18px; font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+  .flow{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+  .node{flex:1 1 150px; min-width:150px; background:var(--panel-2); border:1px solid var(--border);
+    border-radius:12px; padding:16px; text-align:center}
+  .node .ico{font-size:26px; display:block; margin-bottom:8px}
+  .node .t{font-weight:600; font-size:14.5px}
+  .node .s{font-size:12.5px; color:var(--muted); margin-top:3px}
+  .arrow{color:var(--accent); font-size:22px; flex:0 0 auto}
+
+  /* TOC */
+  nav.toc{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px 26px; margin:30px 0}
+  nav.toc h3{margin:0 0 14px; font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted)}
+  nav.toc ol{margin:0; padding-left:20px; columns:2; column-gap:34px}
+  nav.toc li{margin:7px 0; break-inside:avoid}
+  @media (max-width:640px){nav.toc ol{columns:1}}
+
+  /* SECTIONS */
+  section{margin:54px 0; scroll-margin-top:20px}
+  .step-head{display:flex; gap:16px; align-items:flex-start; margin-bottom:8px}
+  .num{flex:0 0 auto; width:42px; height:42px; border-radius:12px; display:grid; place-items:center;
+    background:linear-gradient(160deg,var(--accent),#5b78d6); color:#0b0f15; font-weight:800; font-size:19px;
+    box-shadow:0 4px 14px rgba(124,156,255,.35)}
+  .step-head h2{margin:0; font-size:25px; letter-spacing:-.01em; padding-top:4px}
+  .step-sub{color:var(--muted); margin:2px 0 18px 58px; font-size:15px}
+  .body{margin-left:58px}
+  @media (max-width:560px){.step-sub,.body{margin-left:0}}
+
+  p{margin:14px 0}
+  ul.clean{list-style:none; padding:0; margin:14px 0}
+  ul.clean li{position:relative; padding:6px 0 6px 28px}
+  ul.clean li::before{content:"›"; position:absolute; left:6px; top:5px; color:var(--accent); font-weight:800}
+
+  /* CODE */
+  pre{background:var(--code-bg); border:1px solid var(--border); border-radius:12px; padding:16px 18px;
+    overflow-x:auto; margin:18px 0; position:relative}
+  code{font-family:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13.5px}
+  pre code{color:#cdd6e0}
+  .cmt{color:#6e7681}
+  .tok{color:var(--accent-2)}
+  .flag{color:var(--warn)}
+  p code,li code{background:var(--chip); border:1px solid var(--border); border-radius:6px;
+    padding:1px 6px; font-size:13px; color:#ffd9a8}
+  .label{position:absolute; top:-10px; left:14px; background:var(--accent); color:#0b0f15;
+    font-size:11px; font-weight:700; padding:2px 9px; border-radius:6px; letter-spacing:.04em}
+
+  /* CALLOUTS */
+  .note{border-left:4px solid var(--accent); background:rgba(124,156,255,.08);
+    border-radius:0 10px 10px 0; padding:14px 18px; margin:18px 0}
+  .note.warn{border-color:var(--warn); background:rgba(227,179,65,.08)}
+  .note.ok{border-color:var(--accent-2); background:rgba(86,211,100,.08)}
+  .note .nt{font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:4px}
+  .note.warn .nt{color:var(--warn)} .note .nt{color:var(--accent)} .note.ok .nt{color:var(--accent-2)}
+
+  /* TREE */
+  .tree{background:var(--code-bg); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin:18px 0}
+  .tree pre{background:none; border:none; padding:0; margin:0}
+  .tree .dir{color:var(--accent)} .tree .key{color:var(--accent-2)} .tree .c{color:#6e7681}
+
+  hr{border:none; border-top:1px solid var(--border); margin:50px 0}
+  footer{color:var(--muted); font-size:14px; text-align:center; padding-top:30px}
+  .pill{display:inline-block; background:var(--chip); border:1px solid var(--border); border-radius:6px;
+    padding:1px 8px; font-size:12.5px; color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">Internal Setup Guide</span>
+  <h1>Build a self-updating dashboard<br>with a custom Claude skill + GitHub Pages</h1>
+  <p class="lede">A start-to-finish walkthrough of how the Complex Performance Pack publishes itself: a local Claude Code skill that builds the HTML report, versions every run, and auto-deploys a shareable public link. Follow this to set up the same thing for your own report.</p>
+  <div class="meta-row">
+    <span class="chip">⏱️ <b>~30 min</b> first-time setup</span>
+    <span class="chip">💻 <b>macOS</b> · zsh · git</span>
+    <span class="chip">🤖 <b>Claude Code</b> + a skill bundle</span>
+    <span class="chip">🌐 <b>GitHub Pages</b> hosting (free)</span>
+  </div>
+
+  <div class="blueprint">
+    <h3>What you end up with</h3>
+    <div class="flow">
+      <div class="node"><span class="ico">📊</span><div class="t">New data</div><div class="s">Triple Whale, Shopify, Klaviyo exports</div></div>
+      <span class="arrow">→</span>
+      <div class="node"><span class="ico">⚡</span><div class="t">/skill run</div><div class="s">Claude builds the HTML</div></div>
+      <span class="arrow">→</span>
+      <div class="node"><span class="ico">🗂️</span><div class="t">Versioned</div><div class="s">dated copy in <code>artefacts/</code></div></div>
+      <span class="arrow">→</span>
+      <div class="node"><span class="ico">🚀</span><div class="t">Live link</div><div class="s">auto-pushed → GitHub Pages</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <nav class="toc">
+    <h3>Steps</h3>
+    <ol>
+      <li><a href="#prereq">Prerequisites &amp; accounts</a></li>
+      <li><a href="#init">Initialize the git repo</a></li>
+      <li><a href="#gh">Install &amp; authenticate the GitHub CLI</a></li>
+      <li><a href="#push">Create a private repo &amp; push</a></li>
+      <li><a href="#pages">Turn on GitHub Pages (public link)</a></li>
+      <li><a href="#skill">Install the skill locally</a></li>
+      <li><a href="#workflow">Wire up the auto-deploy workflow</a></li>
+      <li><a href="#gitignore">Track the skill, ignore secrets</a></li>
+      <li><a href="#run">Run it every month</a></li>
+      <li><a href="#troubleshoot">Troubleshooting</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section id="prereq">
+    <div class="step-head"><div class="num">1</div><h2>Prerequisites &amp; accounts</h2></div>
+    <p class="step-sub">What you need before touching the terminal.</p>
+    <div class="body">
+      <ul class="clean">
+        <li><b>A GitHub account.</b> The repo can be private; only the published site is public.</li>
+        <li><b>Git installed.</b> Check with <code>git --version</code>. On macOS it ships with the Xcode command-line tools.</li>
+        <li><b>Claude Code</b> running in your terminal.</li>
+        <li><b>The skill bundle</b> — a <code>.skill</code> file (it's just a zip). You can export it from Claude, or copy the <code>.claude/skills/</code> folder from an existing setup.</li>
+        <li><b>Your data exports</b> ready when you want to run it (Triple Whale Pins <span class="pill">.xlsx</span>, Shopify <span class="pill">.csv</span>, Klaviyo, etc.).</li>
+      </ul>
+      <p>Confirm your git identity is set so commits are attributed to you:</p>
+      <pre><span class="label">terminal</span><code><span class="cmt"># check who git thinks you are</span>
+git config --global user.name
+git config --global user.email
+
+<span class="cmt"># set them if blank</span>
+git config --global user.name <span class="tok">"Your Name"</span>
+git config --global user.email <span class="tok">"you@example.com"</span></code></pre>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="init">
+    <div class="step-head"><div class="num">2</div><h2>Initialize the git repo</h2></div>
+    <p class="step-sub">Turn your project folder into a tracked repository.</p>
+    <div class="body">
+      <p>From inside your project folder (the one holding your dashboard HTML):</p>
+      <pre><span class="label">terminal</span><code><span class="cmt"># start git in the current folder</span>
+git init
+
+<span class="cmt"># GitHub Pages serves a file named index.html as the homepage,</span>
+<span class="cmt"># so make your dashboard the index</span>
+cp your_dashboard.html index.html
+
+git add -A
+git commit -m <span class="tok">"Initial dashboard"</span></code></pre>
+      <div class="note ok"><span class="nt">Why index.html?</span>GitHub Pages automatically serves <code>index.html</code> at the root URL. Keeping your live dashboard named <code>index.html</code> means the shareable link just works with no extra path.</div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="gh">
+    <div class="step-head"><div class="num">3</div><h2>Install &amp; authenticate the GitHub CLI</h2></div>
+    <p class="step-sub">The <code>gh</code> tool lets Claude create the repo and push without leaving the terminal.</p>
+    <div class="body">
+      <p>If you have Homebrew: <code>brew install gh</code>. No Homebrew? Grab the official binary directly (Apple Silicon shown — use <code>amd64</code> on Intel):</p>
+      <pre><span class="label">terminal · no-homebrew install</span><code>mkdir -p ~/bin <span class="cmt"># a folder for personal binaries</span>
+cd /tmp
+curl -sLO https://github.com/cli/cli/releases/download/<span class="flag">v2.94.0</span>/gh_2.94.0_macOS_arm64.zip
+unzip -oq gh_2.94.0_macOS_arm64.zip
+cp gh_2.94.0_macOS_arm64/bin/gh ~/bin/gh
+chmod +x ~/bin/gh
+~/bin/gh --version  <span class="cmt"># verify</span></code></pre>
+      <p>Then log in. If you already authenticate git to GitHub over HTTPS, your token is in the macOS keychain and you can reuse it:</p>
+      <pre><span class="label">terminal · auth</span><code><span class="cmt"># reuse the token already stored for github.com</span>
+security find-internet-password -s github.com -w | ~/bin/gh auth login --with-token
+
+<span class="cmt"># …or just run the interactive flow and follow the browser prompts</span>
+~/bin/gh auth login
+
+~/bin/gh auth status  <span class="cmt"># confirm you're logged in</span></code></pre>
+      <div class="note"><span class="nt">PATH tip</span>If you installed to <code>~/bin</code>, add it to your PATH so you can type <code>gh</code> anywhere: append <code>export PATH="$HOME/bin:$PATH"</code> to your <code>~/.zshrc</code>, then open a new terminal.</div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="push">
+    <div class="step-head"><div class="num">4</div><h2>Create a private repo &amp; push</h2></div>
+    <p class="step-sub">One command creates the GitHub repo, links it, and pushes your first commit.</p>
+    <div class="body">
+      <pre><span class="label">terminal</span><code>gh repo create <span class="flag">your-repo-name</span> \
+  <span class="tok">--private</span> \
+  --description <span class="tok">"My performance dashboard"</span> \
+  --source . <span class="cmt"># use the current folder</span> \
+  --remote origin \
+  --push    <span class="cmt"># push the existing commits right away</span></code></pre>
+      <div class="note ok"><span class="nt">Private is fine</span>Your <em>code</em> stays private. In the next step you publish only the rendered site. The repo itself never has to be public on a paid plan — though on a free plan, Pages requires the repo to be public (see next step).</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="pages">
+    <div class="step-head"><div class="num">5</div><h2>Turn on GitHub Pages</h2></div>
+    <p class="step-sub">This produces the public, shareable link. Done once in the browser.</p>
+    <div class="body">
+      <ol>
+        <li>On a <b>free</b> account, first make the repo public: <b>Settings → General → Danger Zone → Change visibility → Public</b>. <span class="pill">paid plans can keep it private</span></li>
+        <li>Go to <b>Settings → Pages</b> (left sidebar).</li>
+        <li>Under <b>Build and deployment → Source</b>, choose <b>Deploy from a branch</b>.</li>
+        <li>Set <b>Branch: <code>main</code></b> and folder <b><code>/ (root)</code></b>, then <b>Save</b>.</li>
+        <li>Leave <b>Enforce HTTPS</b> checked.</li>
+      </ol>
+      <p>After ~1 minute your dashboard is live at:</p>
+      <pre><span class="label">your public url</span><code>https://<span class="flag">&lt;your-username&gt;</span>.github.io/<span class="flag">&lt;your-repo-name&gt;</span>/</code></pre>
+      <div class="note warn"><span class="nt">Heads up — it's public</span>Anyone with the link can view it, no login needed. The whole repo's history becomes public too if you made it public. Don't enable Pages until you're sure the data in the dashboard is safe to share.</div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="skill">
+    <div class="step-head"><div class="num">6</div><h2>Install the skill locally</h2></div>
+    <p class="step-sub">A <em>local project skill</em> lives in your repo and overrides the bundled cloud version.</p>
+    <div class="body">
+      <p>A <code>.skill</code> file is a zip. Unpack its contents into <code>.claude/skills/</code> inside your repo:</p>
+      <pre><span class="label">terminal</span><code>mkdir -p .claude/skills
+unzip -oq your-skill.skill -d .claude/skills
+
+<span class="cmt"># you should now see the skill folder with its SKILL.md</span>
+find .claude/skills -type f</code></pre>
+      <p>The result is a normal folder — Claude discovers any <code>SKILL.md</code> under <code>.claude/skills/</code>:</p>
+      <div class="tree"><pre><span class="dir">.claude/skills/complex-performance-pack/</span>
+├── <span class="key">SKILL.md</span>            <span class="c"># the instructions Claude follows</span>
+├── assets/
+│   └── template.html   <span class="c"># canonical dashboard structure</span>
+└── references/         <span class="c"># data-extraction rules, edit map, copy patterns</span>
+    ├── data-extraction.md
+    ├── edit-locations.md
+    └── narrative-patterns.md</pre></div>
+      <div class="note"><span class="nt">Local vs. bundled</span>A project skill registers under its plain name (e.g. <code>/complex-performance-pack</code>). The original cloud skill stays namespaced (<code>/anthropic-skills:complex-performance-pack</code>). Typing the plain name runs <em>your</em> local copy — and a plugin update can't overwrite it.</div>
+      <div class="note warn"><span class="nt">Restart to load it</span>Claude Code discovers skills at session start. After adding the folder, start a fresh session <em>in this repo</em>, then type <code>/</code> and confirm the skill appears in the list.</div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="workflow">
+    <div class="step-head"><div class="num">7</div><h2>Wire up the auto-deploy workflow</h2></div>
+    <p class="step-sub">Edit <code>SKILL.md</code> so each run archives a dated copy, updates the live file, and pushes.</p>
+    <div class="body">
+      <p>The key is to give the skill's final step explicit, local instructions. Two important design choices:</p>
+      <ul class="clean">
+        <li><b>Start from <code>index.html</code>, not the template.</b> The editing is additive (append the new month to existing chart arrays), so basing each run on the current live file preserves all prior months. The template is only the fallback for a brand-new pack.</li>
+        <li><b>Date-stamp every run</b> into <code>artefacts/</code> so you keep a full history and can always roll back.</li>
+      </ul>
+      <p>Add a closing step to <code>SKILL.md</code> along these lines:</p>
+      <pre><span class="label">.claude/skills/…/SKILL.md — final step</span><code><span class="cmt">### Archive, update index, deploy</span>
+
+<span class="cmt"># 1. keep a dated copy of every run</span>
+mkdir -p artefacts
+cp _working.html <span class="tok">"artefacts/performance-pack-$(date +%F).html"</span>
+
+<span class="cmt"># 2. update the file GitHub Pages serves</span>
+cp _working.html index.html
+rm -f _working.html
+
+<span class="cmt"># 3. publish — auto-push redeploys the public site</span>
+git add -A
+git commit -m <span class="tok">"Update performance pack (run $(date +%F))"</span>
+git push origin main</code></pre>
+      <div class="note ok"><span class="nt">date +%F</span>Expands to <code>YYYY-MM-DD</code>, giving filenames like <code>artefacts/performance-pack-2026-06-11.html</code>. Re-running on the same day simply overwrites that day's archive.</div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="gitignore">
+    <div class="step-head"><div class="num">8</div><h2>Track the skill, ignore the secrets</h2></div>
+    <p class="step-sub">Keep local Claude settings private while version-controlling the skill itself.</p>
+    <div class="body">
+      <p>By default people ignore the whole <code>.claude/</code> folder — but that would also drop your skill. Ignore everything <em>except</em> the skills folder:</p>
+      <pre><span class="label">.gitignore</span><code><span class="cmt"># ignore local Claude settings, but keep the project skill tracked</span>
+.claude/*
+<span class="tok">!.claude/skills/</span>
+.DS_Store
+
+<span class="cmt"># housekeeping</span>
+*.skill          <span class="cmt"># the zip bundle (already unpacked)</span>
+_working.html    <span class="cmt"># temp file the skill builds into</span></code></pre>
+      <p>Commit the skill so it travels with the repo for your teammates:</p>
+      <pre><span class="label">terminal</span><code>mkdir -p artefacts          <span class="cmt"># create the history folder</span>
+cp index.html <span class="tok">"artefacts/performance-pack-$(date +%F).html"</span>  <span class="cmt"># seed it</span>
+
+git add -A
+git commit -m <span class="tok">"Add local skill + versioned artefacts workflow"</span>
+git push origin main</code></pre>
+      <div class="note"><span class="nt">End state</span>Your repo now holds the live dashboard, a dated history, and the skill — nothing else.</div>
+      <div class="tree"><pre><span class="dir">your-repo/</span>
+├── <span class="key">index.html</span>                              <span class="c"># live site (GitHub Pages)</span>
+├── .gitignore
+├── artefacts/
+│   └── performance-pack-2026-06-11.html    <span class="c"># dated run history</span>
+└── .claude/skills/complex-performance-pack/ <span class="c"># the skill (tracked)</span></pre></div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section id="run">
+    <div class="step-head"><div class="num">9</div><h2>Run it every month</h2></div>
+    <p class="step-sub">The whole point: one command turns new exports into a published update.</p>
+    <div class="body">
+      <p>Open Claude Code <b>inside the repo folder</b>, then:</p>
+      <pre><span class="label">claude code</span><code>/complex-performance-pack here's June's data</code></pre>
+      <p>…and attach your files. You can also just say <em>"update the performance pack, here's the new data"</em> with files attached — the skill's description triggers it automatically. On each run it will:</p>
+      <ul class="clean">
+        <li>Start from the current <code>index.html</code> (keeps every prior month)</li>
+        <li>Extract &amp; cross-check the numbers from your exports</li>
+        <li>Add the new month across all charts, KPIs, and the written readout</li>
+        <li>Save a dated copy to <code>artefacts/</code></li>
+        <li>Update <code>index.html</code>, commit, and <b>push automatically</b> → public site refreshes in ~1 min</li>
+      </ul>
+      <div class="note warn"><span class="nt">Two rules</span>① Always run it <em>from the repo folder</em>, or the local skill won't be active and the paths won't resolve. ② It auto-pushes to the <em>public</em> site — glance at your data before running.</div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- TROUBLESHOOT -->
+  <section id="troubleshoot">
+    <div class="step-head"><div class="num">?</div><h2>Troubleshooting</h2></div>
+    <div class="body">
+      <ul class="clean">
+        <li><b>Skill doesn't show under <code>/</code>.</b> Restart Claude Code in the repo folder — skills load at session start.</li>
+        <li><b>It ran the cloud version instead.</b> Use the plain name <code>/complex-performance-pack</code>; the namespaced <code>/anthropic-skills:…</code> is the old bundled one.</li>
+        <li><b><code>gh: command not found</code>.</b> Either add <code>~/bin</code> to PATH, or call it by full path <code>~/bin/gh</code>.</li>
+        <li><b>Push asks for a password.</b> Run <code>gh auth status</code>; re-auth with <code>gh auth login</code> if needed.</li>
+        <li><b>Pages 404s.</b> Confirm the repo is public (free plan), the branch is <code>main</code>, folder is <code>/ (root)</code>, and an <code>index.html</code> exists at the root. Give it a minute to build.</li>
+        <li><b>A month went missing.</b> The skill must base off <code>index.html</code>, not the template. Restore from the matching file in <code>artefacts/</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Internal setup guide · self-updating performance pack · built with Claude Code
+  </footer>
+
+</div>
+</body>
+</html>
