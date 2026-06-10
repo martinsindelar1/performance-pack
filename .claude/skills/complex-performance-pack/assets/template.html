@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Complex™ — Performance Pack · Jan–Apr 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #131313;
+    --bg-elev-2: #1a1a1a;
+    --border: #262626;
+    --border-bright: #3a3a3a;
+    --text: #f5f5f4;
+    --text-dim: #a3a3a3;
+    --text-faint: #525252;
+    --accent: #e5ff00;   /* signature electric yellow */
+    --green: #4ade80;
+    --red: #ef4444;
+    --amber: #fbbf24;
+    --blue: #60a5fa;
+    --pink: #f472b6;
+    --purple: #c084fc;
+    --shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(229,255,0,0.04) 0%, transparent 35%),
+      radial-gradient(circle at 85% 80%, rgba(96,165,250,0.03) 0%, transparent 40%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.02;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 32px 40px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===== HEADER ===== */
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-mark .logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 28px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .brand-mark .logo .acc { color: var(--accent); }
+
+  .brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding-left: 14px;
+    border-left: 1px solid var(--border);
+    line-height: 1.4;
+  }
+
+  .meta {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .meta .pulse {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 6px;
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ===== TITLE BLOCK ===== */
+  .title-block {
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(48px, 6vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin-bottom: 16px;
+  }
+
+  h1 .accent-mark {
+    color: var(--accent);
+    display: inline-block;
+    transform: translateY(-4px);
+  }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .lens-tag {
+    display: inline-block;
+    padding: 8px 14px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+
+  .lens-tag::before {
+    content: "■";
+    color: var(--accent);
+    margin-right: 8px;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+  }
+
+  .section-head h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 26px;
+    letter-spacing: -0.025em;
+    flex: 1;
+  }
+
+  .section-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* ===== KPI BAR ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .kpi {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .kpi:hover {
+    border-color: var(--border-bright);
+  }
+
+  .kpi-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .kpi-value {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 32px;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .kpi-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .kpi-trend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .trend-up   { background: rgba(74,222,128,0.12); color: var(--green); }
+  .trend-down { background: rgba(239,68,68,0.12); color: var(--red); }
+  .trend-flat { background: rgba(163,163,163,0.12); color: var(--text-dim); }
+
+  /* ===== EXECUTIVE SUMMARY ===== */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .exec-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+  }
+
+  .exec-card.pos { border-top: 3px solid var(--green); }
+  .exec-card.neg { border-top: 3px solid var(--red); }
+  .exec-card.opp { border-top: 3px solid var(--accent); }
+
+  .exec-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .exec-card.pos h3 { color: var(--green); }
+  .exec-card.neg h3 { color: var(--red); }
+  .exec-card.opp h3 { color: var(--accent); }
+
+  .exec-card ul {
+    list-style: none;
+  }
+
+  .exec-card li {
+    font-size: 13px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .exec-card li:last-child { border-bottom: none; }
+  .exec-card li strong { color: var(--text); font-weight: 600; }
+  .exec-card li .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .exec-card.neg li .num { color: var(--red); }
+  .exec-card.pos li .num { color: var(--green); }
+
+  /* ===== CHANNEL CARDS ===== */
+  .channel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .channel {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 22px;
+    position: relative;
+  }
+
+  .channel::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .channel.fb::before     { background: linear-gradient(90deg, #1877f2, #00d4ff); }
+  .channel.google::before { background: linear-gradient(90deg, #4285f4, #ea4335, #fbbc04, #34a853); }
+  .channel.tiktok::before { background: linear-gradient(90deg, #ff0050, #00f2ea); }
+  .channel.klaviyo::before{ background: linear-gradient(90deg, var(--accent), #34d399); }
+
+  .channel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .channel-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+  }
+
+  .channel-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--bg-elev-2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .channel-badge.hot   { color: var(--accent); border-color: var(--accent); }
+  .channel-badge.warn  { color: var(--amber); border-color: var(--amber); }
+  .channel-badge.cool  { color: var(--blue); border-color: var(--blue); }
+
+  .channel-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--border);
+    font-size: 12px;
+  }
+  .channel-metric:last-of-type { border-bottom: none; }
+  .channel-metric .label {
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .channel-metric .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .channel-metric .val.acc { color: var(--accent); }
+  .channel-metric .val.red { color: var(--red); }
+  .channel-metric .val.green { color: var(--green); }
+
+  .channel-takeaway {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ===== CHARTS ===== */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .chart-full {
+    grid-column: 1 / -1;
+  }
+
+  .chart-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 22px;
+  }
+
+  .chart-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 6px;
+  }
+
+  .chart-card .chart-subtitle {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+
+  .chart-canvas-wrap {
+    position: relative;
+    height: 280px;
+  }
+
+  .chart-canvas-wrap.tall {
+    height: 360px;
+  }
+
+  /* ===== DATA TABLE ===== */
+  .data-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .data-table th {
+    text-align: left;
+    padding: 14px 16px;
+    background: var(--bg-elev-2);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .data-table .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .data-table .label-col {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  .delta-pos { color: var(--green); }
+  .delta-neg { color: var(--red); }
+  .delta-flat { color: var(--text-dim); }
+
+  /* ===== ACTION CARDS ===== */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .action {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    border-left: 3px solid var(--accent);
+  }
+
+  .action.urgent { border-left-color: var(--red); }
+  .action.medium { border-left-color: var(--amber); }
+  .action.opportunity { border-left-color: var(--accent); }
+
+  .action-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 16px;
+  }
+
+  .action-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    flex: 1;
+  }
+
+  .action-priority {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    padding: 3px 8px;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .action.urgent .action-priority { color: var(--red); border-color: var(--red); }
+  .action.medium .action-priority { color: var(--amber); border-color: var(--amber); }
+  .action.opportunity .action-priority { color: var(--accent); border-color: var(--accent); }
+
+  .action-body {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .action-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .action-meta-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+
+  .action-meta-item .key {
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .action-meta-item .val { color: var(--text); font-weight: 500; }
+
+  /* ===== DISCOUNT CALENDAR ===== */
+  .calendar-strip {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .cal-month {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 10px 8px;
+    text-align: center;
+    position: relative;
+    min-height: 70px;
+  }
+
+  .cal-month.passed { opacity: 0.4; }
+  .cal-month.has-event { border-color: var(--accent); background: rgba(229,255,0,0.04); }
+
+  .cal-month-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+
+  .cal-event {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .cal-discount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    margin-top: 2px;
+    font-weight: 700;
+  }
+
+  /* ===== FOOTER NOTES ===== */
+  .notes-box {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-top: 32px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+
+  .notes-box h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .notes-box ul { list-style: none; }
+  .notes-box li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .notes-box li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1100px) {
+    .kpi-grid, .channel-grid { grid-template-columns: repeat(2, 1fr); }
+    .exec-grid { grid-template-columns: 1fr; }
+    .chart-grid { grid-template-columns: 1fr; }
+    .action-grid { grid-template-columns: 1fr; }
+    .calendar-strip { grid-template-columns: repeat(6, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .kpi-grid, .channel-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 44px; }
+    .calendar-strip { grid-template-columns: repeat(3, 1fr); }
+    header.top { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .title-block { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="top">
+    <div class="brand-mark">
+      <div class="logo">COMPLEX<span class="acc">.</span></div>
+      <div class="brand-sub">
+        Built on Science<br/>
+        Made to Perform
+      </div>
+    </div>
+    <div class="meta">
+      <span class="pulse"></span> Live · Auto-updated 01 May 2026<br/>
+      Source: Triple Whale · officialcomplex.myshopify.com
+    </div>
+  </header>
+
+  <!-- TITLE -->
+  <div class="title-block">
+    <div>
+      <h1>PERFORMANCE<br/>PACK<span class="accent-mark">.</span></h1>
+      <div class="subtitle">Q1 + April 2026 · Channel-mix view · Founder readout</div>
+    </div>
+    <div class="lens-tag">Lens · Channel mix</div>
+  </div>
+
+  <!-- ===== SECTION 1 — TOP-LINE KPIs ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">01 /</span>
+      <h2>Top-line · Jan–Apr 2026</h2>
+      <span class="section-meta">4 months · TW data</span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Order Revenue <span class="kpi-trend trend-up">+8.9%</span></div>
+        <div class="kpi-value">31.96M</div>
+        <div class="kpi-sub">CZK · Jan→Apr cumulative</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Blended ROAS <span class="kpi-trend trend-down">−3.7%</span></div>
+        <div class="kpi-value">5.36</div>
+        <div class="kpi-sub">Avg · trending down 5.45→5.25</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">New Customer CPA <span class="kpi-trend trend-down">+30.3%</span></div>
+        <div class="kpi-value">722</div>
+        <div class="kpi-sub">CZK · Jan 623 → Apr 813</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Klaviyo Revenue <span class="kpi-trend trend-up">+17.6%</span></div>
+        <div class="kpi-value">12.7M</div>
+        <div class="kpi-sub">CZK · 39.8% of total revenue</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Total Orders <span class="kpi-trend trend-up">+7.9%</span></div>
+        <div class="kpi-value">21,325</div>
+        <div class="kpi-sub">Avg AOV 1,283 CZK</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Ad Spend <span class="kpi-trend trend-down">+13.0%</span></div>
+        <div class="kpi-value">5.97M</div>
+        <div class="kpi-sub">CZK · outpacing revenue growth</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Net Profit <span class="kpi-trend trend-up">+19.2%</span></div>
+        <div class="kpi-value">5.91M</div>
+        <div class="kpi-sub">CZK · margin 18% avg</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">vs FY26 Budget <span class="kpi-trend trend-down">−28%</span></div>
+        <div class="kpi-value">72%</div>
+        <div class="kpi-sub">Fulfilled · 31.96M vs 44.66M plan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 2 — EXECUTIVE SUMMARY ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">02 /</span>
+      <h2>Executive readout</h2>
+      <span class="section-meta">The big five · per bucket</span>
+    </div>
+
+    <div class="exec-grid">
+      <div class="exec-card pos">
+        <h3>● Positives</h3>
+        <ul>
+          <li><strong>Klaviyo flows + campaigns</strong> drove <span class="num">12.7M CZK</span> — 39.8% of total revenue. April flows alone <span class="num">+44%</span> vs Jan.</li>
+          <li><strong>Revenue grew every month</strong> Jan→Apr (+8.9% cumulative) despite traffic volatility.</li>
+          <li><strong>Conversion rate jumped to 2.75%</strong> in April from 1.7–1.9% baseline. AOV stable at 1.28K CZK.</li>
+          <li><strong>Net profit up 19%</strong> Jan→Apr despite ad spend +13% — operational discipline holding.</li>
+          <li><strong>TikTok ROAS spike</strong> to <span class="num">12.77</span> in April (from 2.10 in Mar). Worth investigating.</li>
+        </ul>
+      </div>
+
+      <div class="exec-card neg">
+        <h3>● Negatives</h3>
+        <ul>
+          <li><strong>New Customer CPA up <span class="num">+30%</span></strong> Jan→Apr (623→813 CZK). The #1 red flag.</li>
+          <li><strong>Blended ROAS sliding</strong> 5.45→5.25 (−3.7%). Ad spend growing faster than ad revenue.</li>
+          <li><strong>Behind FY26 budget by 28%</strong> YTD — 31.96M actual vs 44.66M planned for Jan–Apr.</li>
+          <li><strong>Meta CPC up <span class="num">+10%</span></strong> (7.96→8.73 CZK), Meta CTR down to 0.71% in April from 0.96% in March.</li>
+          <li><strong>Acquisition shrinking:</strong> new customers down 440→350 (−20%) while spend up.</li>
+        </ul>
+      </div>
+
+      <div class="exec-card opp">
+        <h3>● Opportunities</h3>
+        <ul>
+          <li><strong>Endurance Season (Apr 12–15, 2+1)</strong> coincides with April CR spike to 2.75%. Replicate mechanic for Summer prep.</li>
+          <li><strong>Klaviyo headroom:</strong> Campaigns scaled +44%, Flows flat. Flow optimization is next unlock.</li>
+          <li><strong>Google ROAS 18–22×</strong> — push more spend; currently only 19% of ad budget.</li>
+          <li><strong>TikTok efficiency improving</strong> while spend dropping. Re-test creative-fund allocation.</li>
+          <li><strong>Returning customer revenue +26%</strong> (4.71M→5.96M) — loyalty engine working. Push referral + Pro program harder.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3 — CHANNEL MIX (PRIMARY LENS) ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">03 /</span>
+      <h2>Channel mix · primary lens</h2>
+      <span class="section-meta">Meta · Google · TikTok · Klaviyo</span>
+    </div>
+
+    <!-- Channel cards row -->
+    <div class="channel-grid">
+      <div class="channel fb">
+        <div class="channel-head">
+          <div class="channel-name">META</div>
+          <div class="channel-badge warn">Cooling</div>
+        </div>
+        <div class="channel-metric"><span class="label">Spend Jan–Apr</span><span class="val">3.72M CZK</span></div>
+        <div class="channel-metric"><span class="label">ROAS avg</span><span class="val">6.38×</span></div>
+        <div class="channel-metric"><span class="label">CPC Apr</span><span class="val red">8.73 CZK</span></div>
+        <div class="channel-metric"><span class="label">CTR Apr</span><span class="val red">0.71%</span></div>
+        <div class="channel-metric"><span class="label">% of ad mix</span><span class="val">62%</span></div>
+        <div class="channel-takeaway">
+          Workhorse. Largest spend, healthy ROAS — but CPC creeping up and CTR softening in April. Creative refresh needed.
+        </div>
+      </div>
+
+      <div class="channel google">
+        <div class="channel-head">
+          <div class="channel-name">GOOGLE</div>
+          <div class="channel-badge hot">Strongest</div>
+        </div>
+        <div class="channel-metric"><span class="label">Spend Jan–Apr</span><span class="val">1.18M CZK</span></div>
+        <div class="channel-metric"><span class="label">ROAS avg</span><span class="val acc">18.94×</span></div>
+        <div class="channel-metric"><span class="label">CPA avg</span><span class="val green">75 CZK</span></div>
+        <div class="channel-metric"><span class="label">CTR avg</span><span class="val">3.15%</span></div>
+        <div class="channel-metric"><span class="label">% of ad mix</span><span class="val">20%</span></div>
+        <div class="channel-takeaway">
+          Most efficient channel by far. Underspent at 20% of mix despite 19× ROAS. Test budget reallocation from Meta.
+        </div>
+      </div>
+
+      <div class="channel tiktok">
+        <div class="channel-head">
+          <div class="channel-name">TIKTOK</div>
+          <div class="channel-badge cool">Volatile</div>
+        </div>
+        <div class="channel-metric"><span class="label">Spend Jan–Apr</span><span class="val">1.07M CZK</span></div>
+        <div class="channel-metric"><span class="label">ROAS range</span><span class="val">2.1× – 12.8×</span></div>
+        <div class="channel-metric"><span class="label">Impressions</span><span class="val">48.7M</span></div>
+        <div class="channel-metric"><span class="label">Apr ROAS</span><span class="val green">12.77×</span></div>
+        <div class="channel-metric"><span class="label">% of ad mix</span><span class="val">18%</span></div>
+        <div class="channel-takeaway">
+          March slump (2.1× ROAS) then April rebound to 12.77×. Investigate creative or audience change that drove April lift.
+        </div>
+      </div>
+
+      <div class="channel klaviyo">
+        <div class="channel-head">
+          <div class="channel-name">KLAVIYO</div>
+          <div class="channel-badge hot">Growing</div>
+        </div>
+        <div class="channel-metric"><span class="label">Revenue Jan–Apr</span><span class="val acc">12.7M CZK</span></div>
+        <div class="channel-metric"><span class="label">% of total revenue</span><span class="val acc">39.8%</span></div>
+        <div class="channel-metric"><span class="label">Flows Apr</span><span class="val">1.28M</span></div>
+        <div class="channel-metric"><span class="label">Campaigns Apr</span><span class="val green">2.25M</span></div>
+        <div class="channel-metric"><span class="label">List growth</span><span class="val">~20K subs</span></div>
+        <div class="channel-takeaway">
+          The hidden hero. Largest revenue contributor, growing +18%. Campaigns lifted +44%; flows need same treatment.
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>Channel Spend Mix</h4>
+        <div class="chart-subtitle">Where the ad money actually went</div>
+        <div class="chart-canvas-wrap"><canvas id="spendMixChart"></canvas></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>ROAS by Channel</h4>
+        <div class="chart-subtitle">Google leads · Meta steady · TikTok volatile</div>
+        <div class="chart-canvas-wrap"><canvas id="roasChart"></canvas></div>
+      </div>
+
+      <div class="chart-card chart-full">
+        <h4>Revenue Composition · Monthly</h4>
+        <div class="chart-subtitle">Klaviyo (owned) vs paid channels vs other</div>
+        <div class="chart-canvas-wrap tall"><canvas id="revStackChart"></canvas></div>
+      </div>
+
+      <div class="chart-card chart-full">
+        <h4>Klaviyo Deep Dive · Flows vs Campaigns</h4>
+        <div class="chart-subtitle">Campaigns scaling fast · Flows are next unlock</div>
+        <div class="chart-canvas-wrap"><canvas id="klaviyoChart"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 4 — ACQUISITION HEALTH ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">04 /</span>
+      <h2>Acquisition health · the red flag</h2>
+      <span class="section-meta">CPA · CR · traffic · new vs returning</span>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>New Customer CPA · trending up</h4>
+        <div class="chart-subtitle">+30% Jan→Apr · biggest watch item</div>
+        <div class="chart-canvas-wrap"><canvas id="cpaChart"></canvas></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>New vs Returning Revenue</h4>
+        <div class="chart-subtitle">Returning customers carrying growth</div>
+        <div class="chart-canvas-wrap"><canvas id="newReturningChart"></canvas></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>Conversion Rate</h4>
+        <div class="chart-subtitle">April spike to 2.75% — replicable?</div>
+        <div class="chart-canvas-wrap"><canvas id="crChart"></canvas></div>
+      </div>
+
+      <div class="chart-card">
+        <h4>Traffic Volatility</h4>
+        <div class="chart-subtitle">Users dropped 33% in April but revenue grew</div>
+        <div class="chart-canvas-wrap"><canvas id="trafficChart"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 5 — DISCOUNT CALENDAR OVERLAY ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">05 /</span>
+      <h2>Promo calendar overlay · 2026</h2>
+      <span class="section-meta">From your Notion · 10 events scheduled</span>
+    </div>
+
+    <div class="calendar-strip">
+      <div class="cal-month passed has-event">
+        <div class="cal-month-name">Jan</div>
+        <div class="cal-event">New Year Sale</div>
+        <div class="cal-discount">15%</div>
+      </div>
+      <div class="cal-month passed has-event">
+        <div class="cal-month-name">Feb</div>
+        <div class="cal-event">Founder Days</div>
+        <div class="cal-discount">20%</div>
+      </div>
+      <div class="cal-month passed">
+        <div class="cal-month-name">Mar</div>
+      </div>
+      <div class="cal-month passed has-event">
+        <div class="cal-month-name">Apr</div>
+        <div class="cal-event">Endurance Start</div>
+        <div class="cal-discount">2+1</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-name">May</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Jun</div>
+        <div class="cal-event">Summer Prep</div>
+        <div class="cal-discount">15%</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Jul</div>
+        <div class="cal-event">Refund Lottery</div>
+        <div class="cal-discount">Refund</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Aug/Sep</div>
+        <div class="cal-event">Team Season</div>
+        <div class="cal-discount">2+1</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Oct</div>
+        <div class="cal-event">Flash Delivery</div>
+        <div class="cal-discount">Free ship</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Nov</div>
+        <div class="cal-event">Black Friday</div>
+        <div class="cal-discount">20%</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Dec</div>
+        <div class="cal-event">Christmas</div>
+        <div class="cal-discount">2+1</div>
+      </div>
+      <div class="cal-month has-event">
+        <div class="cal-month-name">Dec/Jan</div>
+        <div class="cal-event">NY Sale '27</div>
+        <div class="cal-discount">15%</div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-top:24px;">
+      <h4>Revenue + Discount Event Overlay</h4>
+      <div class="chart-subtitle">Where promo activity sat against monthly revenue</div>
+      <div class="chart-canvas-wrap tall"><canvas id="discountOverlayChart"></canvas></div>
+    </div>
+
+    <div class="notes-box">
+      <h4>Reading the overlay</h4>
+      <ul>
+        <li><strong>Jan New Year Sale (15%)</strong> set a strong floor of 7.63M but blended ROAS was at peak (5.45). Discount stacked well with cold-traffic appetite.</li>
+        <li><strong>Feb Founder Days (20%)</strong> — only 1.2% revenue lift vs Jan despite deeper discount. CPA rose +17%. Discount fatigue starting?</li>
+        <li><strong>Mar (no discount)</strong> was the strongest organic month — 8.30M, +7.5% vs Feb. Suggests the brand can carry weight without promo crutch.</li>
+        <li><strong>Apr Endurance 2+1</strong> coincided with CR spike to 2.75%. The "buy 2 get 1 free" mechanic outperformed % discounts on CR.</li>
+        <li><strong>Watchout:</strong> per FY26 plan, discount rate should be 12.8%. YTD actual already trending at 15.3%. Stress-test summer promo depth.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 6 — RAW DATA TABLE ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">06 /</span>
+      <h2>The numbers · monthly</h2>
+      <span class="section-meta">Triple Whale export · normalized</span>
+    </div>
+
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="num">Jan 2026</th>
+            <th class="num">Feb 2026</th>
+            <th class="num">Mar 2026</th>
+            <th class="num">Apr 2026</th>
+            <th class="num">Δ Jan→Apr</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="label-col">Order Revenue (CZK)</td><td class="num">7,630,185</td><td class="num">7,719,617</td><td class="num">8,298,655</td><td class="num">8,306,593</td><td class="num delta-pos">+8.9%</td></tr>
+          <tr><td class="label-col">Orders</td><td class="num">5,153</td><td class="num">5,105</td><td class="num">5,505</td><td class="num">5,562</td><td class="num delta-pos">+7.9%</td></tr>
+          <tr><td class="label-col">AOV (CZK)</td><td class="num">1,269</td><td class="num">1,297</td><td class="num">1,290</td><td class="num">1,278</td><td class="num delta-flat">+0.7%</td></tr>
+          <tr><td class="label-col">Units sold</td><td class="num">20,674</td><td class="num">22,612</td><td class="num">24,900</td><td class="num">23,985</td><td class="num delta-pos">+16.0%</td></tr>
+          <tr><td class="label-col">Sessions</td><td class="num">244,487</td><td class="num">267,505</td><td class="num">225,418</td><td class="num">155,983</td><td class="num delta-neg">−36.2%</td></tr>
+          <tr><td class="label-col">Conversion Rate</td><td class="num">1.88%</td><td class="num">1.70%</td><td class="num">1.96%</td><td class="num">2.75%</td><td class="num delta-pos">+46.3%</td></tr>
+          <tr><td class="label-col">New Customers</td><td class="num">440</td><td class="num">390</td><td class="num">390</td><td class="num">350</td><td class="num delta-neg">−20.5%</td></tr>
+          <tr><td class="label-col">New Customer CPA (CZK)</td><td class="num">623</td><td class="num">728</td><td class="num">721</td><td class="num">813</td><td class="num delta-neg">+30.3%</td></tr>
+          <tr><td class="label-col">Returning Customer Rev (CZK)</td><td class="num">4,714,715</td><td class="num">5,239,638</td><td class="num">5,640,397</td><td class="num">5,962,724</td><td class="num delta-pos">+26.5%</td></tr>
+          <tr><td class="label-col">Blended Ad Spend (CZK)</td><td class="num">1,399,476</td><td class="num">1,442,004</td><td class="num">1,545,146</td><td class="num">1,581,260</td><td class="num delta-neg">+13.0%</td></tr>
+          <tr><td class="label-col">Blended ROAS</td><td class="num">5.45</td><td class="num">5.35</td><td class="num">5.37</td><td class="num">5.25</td><td class="num delta-neg">−3.7%</td></tr>
+          <tr><td class="label-col">Meta Spend (CZK)</td><td class="num">819,112</td><td class="num">873,278</td><td class="num">994,521</td><td class="num">1,035,748</td><td class="num delta-neg">+26.4%</td></tr>
+          <tr><td class="label-col">Meta ROAS</td><td class="num">6.41</td><td class="num">6.37</td><td class="num">6.93</td><td class="num">5.81</td><td class="num delta-neg">−9.4%</td></tr>
+          <tr><td class="label-col">Google Spend (CZK)</td><td class="num">313,043</td><td class="num">256,505</td><td class="num">300,005</td><td class="num">305,475</td><td class="num delta-flat">−2.4%</td></tr>
+          <tr><td class="label-col">Google ROAS</td><td class="num">21.24</td><td class="num">22.32</td><td class="num">13.73</td><td class="num">18.45</td><td class="num delta-neg">−13.1%</td></tr>
+          <tr><td class="label-col">TikTok Spend (CZK)</td><td class="num">267,321</td><td class="num">312,221</td><td class="num">250,620</td><td class="num">240,037</td><td class="num delta-neg">−10.2%</td></tr>
+          <tr><td class="label-col">TikTok ROAS</td><td class="num">7.79</td><td class="num">7.71</td><td class="num">2.10</td><td class="num">12.77</td><td class="num delta-pos">+63.9%</td></tr>
+          <tr><td class="label-col">Klaviyo Total Rev (CZK)</td><td class="num">3,003,621</td><td class="num">2,918,136</td><td class="num">3,252,232</td><td class="num">3,531,010</td><td class="num delta-pos">+17.6%</td></tr>
+          <tr><td class="label-col">Klaviyo Flows (CZK)</td><td class="num">1,444,616</td><td class="num">1,235,661</td><td class="num">1,203,945</td><td class="num">1,282,429</td><td class="num delta-neg">−11.2%</td></tr>
+          <tr><td class="label-col">Klaviyo Campaigns (CZK)</td><td class="num">1,559,005</td><td class="num">1,682,475</td><td class="num">2,048,286</td><td class="num">2,248,581</td><td class="num delta-pos">+44.2%</td></tr>
+          <tr><td class="label-col">Net Profit (CZK)</td><td class="num">1,387,265</td><td class="num">1,421,500</td><td class="num">1,450,500</td><td class="num">1,654,118</td><td class="num delta-pos">+19.2%</td></tr>
+          <tr><td class="label-col">Net Margin</td><td class="num">18%</td><td class="num">18%</td><td class="num">17%</td><td class="num">20%</td><td class="num delta-pos">+2pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 7 — ACTION PLAN ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">07 /</span>
+      <h2>Action plan · next 60 days</h2>
+      <span class="section-meta">Owner · KPI · deadline</span>
+    </div>
+
+    <div class="action-grid">
+      <div class="action urgent">
+        <div class="action-head">
+          <div class="action-title">Diagnose & fix New Customer CPA</div>
+          <div class="action-priority">URGENT</div>
+        </div>
+        <div class="action-body">
+          CPA up +30% (623→813) is the single biggest threat to FY26 plan. Audit Meta creative fatigue, audience saturation, and CR-blocking elements on top landing pages. Refresh top 3 creatives that drive 60%+ of spend.
+        </div>
+        <div class="action-meta">
+          <div class="action-meta-item"><span class="key">Owner</span><span class="val">Filip · Performance lead</span></div>
+          <div class="action-meta-item"><span class="key">KPI</span><span class="val">CPA ≤ 650 CZK</span></div>
+          <div class="action-meta-item"><span class="key">Deadline</span><span class="val">30 Jun 2026</span></div>
+        </div>
+      </div>
+
+      <div class="action opportunity">
+        <div class="action-head">
+          <div class="action-title">Reallocate ad mix toward Google</div>
+          <div class="action-priority">OPPORTUNITY</div>
+        </div>
+        <div class="action-body">
+          Google ROAS 18–22× vs Meta 5.8–6.9× yet Google is only 20% of mix. Test +30% Google budget in May (shift from Meta), targeting PMax tROAS 350–400% per FY26 plan. Stress-test scalability.
+        </div>
+        <div class="action-meta">
+          <div class="action-meta-item"><span class="key">Owner</span><span class="val">Performance team</span></div>
+          <div class="action-meta-item"><span class="key">KPI</span><span class="val">Blended ROAS ≥ 5.5</span></div>
+          <div class="action-meta-item"><span class="key">Deadline</span><span class="val">31 May 2026</span></div>
+        </div>
+      </div>
+
+      <div class="action urgent">
+        <div class="action-head">
+          <div class="action-title">Fix Klaviyo Flows — campaigns are pulling the weight</div>
+          <div class="action-priority">URGENT</div>
+        </div>
+        <div class="action-body">
+          Campaigns +44% Jan→Apr, Flows −11% in the same period. Audit Welcome / Abandoned Cart / Browse Abandonment / Post-Purchase / Win-back. Benchmark vs Placed Order metric ID XQXdDH. Likely 500K+/mo missed revenue.
+        </div>
+        <div class="action-meta">
+          <div class="action-meta-item"><span class="key">Owner</span><span class="val">Sebastian + Klaviyo lead</span></div>
+          <div class="action-meta-item"><span class="key">KPI</span><span class="val">Flows back to 1.5M+/mo</span></div>
+          <div class="action-meta-item"><span class="key">Deadline</span><span class="val">15 Jun 2026</span></div>
+        </div>
+      </div>
+
+      <div class="action medium">
+        <div class="action-head">
+          <div class="action-title">Investigate April CR spike (1.96%→2.75%)</div>
+          <div class="action-priority">MEDIUM</div>
+        </div>
+        <div class="action-body">
+          Users dropped 33% but CR jumped 46%. Either (a) Endurance 2+1 promo was a CR magnet, (b) tracking issue (Microsoft Clarity check), or (c) traffic quality shift. Document what changed and lock it in for Summer Prep.
+        </div>
+        <div class="action-meta">
+          <div class="action-meta-item"><span class="key">Owner</span><span class="val">Honza · Analytics</span></div>
+          <div class="action-meta-item"><span class="key">KPI</span><span class="val">CR ≥ 2.2% in May</span></div>
+          <div class="action-meta-item"><span class="key">Deadline</span><span class="val">20 May 2026</span></div>
+        </div>
+      </div>
+
+      <div class="action medium">
+        <div class="action-head">
+          <div class="action-title">Cross-source data audit (TW vs Shopify vs Klaviyo)</div>
+          <div class="action-priority">MEDIUM</div>
+        </div>
+        <div class="action-body">
+          This pack is built on TW data only. Pull Shopify CSV + Klaviyo direct + UppPromote affiliate report for the same period and reconcile. Material variance &gt;3% on revenue should be flagged. Sets up correct attribution baseline before Q3.
+        </div>
+        <div class="action-meta">
+          <div class="action-meta-item"><span class="key">Owner</span><span class="val">Sebastian</span></div>
+          <div class="action-meta-item"><span class="key">KPI</span><span class="val">≤3% variance reconciled</span></div>
+          <div class="action-meta-item"><span class="key">Deadline</span><span class="val">31 May 2026</span></div>
+        </div>
+      </div>
+
+      <div class="action opportunity">
+        <div class="action-head">
+          <div class="action-title">Lock 2+1 as primary CZ promo mechanic</div>
+          <div class="action-priority">OPPORTUNITY</div>
+        </div>
+        <div class="action-body">
+          April Endurance 2+1 outperformed Feb Founder Days 20% on CR (2.75% vs 1.70%) and avoided 20% margin hit. Default Summer Prep, Team Season, Christmas to 2+1 mechanic. Save 15–20% discount only for New Year Sale and Black Friday.
+        </div>
+        <div class="action-meta">
+          <div class="action-meta-item"><span class="key">Owner</span><span class="val">Sebastian + Filip</span></div>
+          <div class="action-meta-item"><span class="key">KPI</span><span class="val">Discount rate ≤ 12.8%</span></div>
+          <div class="action-meta-item"><span class="key">Deadline</span><span class="val">10 Jun 2026 (pre-Summer)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NOTES & CAVEATS ===== -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">08 /</span>
+      <h2>Data quality notes</h2>
+      <span class="section-meta">Read before reacting</span>
+    </div>
+
+    <div class="notes-box">
+      <h4>Caveats & open questions</h4>
+      <ul>
+        <li><strong>Single-source pack:</strong> all data from Triple Whale export. Shopify, Klaviyo direct, and UppPromote not yet reconciled — cross-source audit is Action #5.</li>
+        <li><strong>Czech locale formatting:</strong> TW export uses dots as thousand separators (99.658 = 99,658 users; 0.44 = 440 new customers). I normalized everything to integer counts.</li>
+        <li><strong>Excel date-conversion artifacts:</strong> some ratios got auto-converted to dates by Excel (e.g. "8/2" → Aug 2, 2026 for New Customer ROAS Jan). Best-effort restored: Jan New Customer ROAS = 8.2, Mar Google CTR ≈ 2.5–3% (estimated as 7.3% would be unreasonably high), Mar TikTok ROAS = 2.10, Mar TikTok CPC = 1.6 (verify against TT Ads Manager).</li>
+        <li><strong>Conversion rate definition:</strong> TW reports against Sessions. April 2.75% is unusually high — confirm with Shopify analytics (typical Complex CR is 1.7–2.0%).</li>
+        <li><strong>Budget benchmark:</strong> FY26 plan per finance file: Jan 7.83M + Feb 9.96M + Mar 13.31M + Apr 13.55M = 44.66M GS planned vs 31.96M actual. Note this is Gross Sales (incl. VAT?) vs the TW "Order Revenue" figure — need clarification on definitions before locking the −28% miss number.</li>
+        <li><strong>New Customer Revenue + Returning Customer Revenue</strong> ≠ Order Revenue exactly (rounding + Other category). Variance &lt;0.5% so used directly.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// ===== GLOBAL CHART STYLING =====
+Chart.defaults.color = '#a3a3a3';
+Chart.defaults.font.family = "'JetBrains Mono', monospace";
+Chart.defaults.font.size = 11;
+Chart.defaults.borderColor = '#262626';
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr'];
+
+const palette = {
+  accent: '#e5ff00',
+  green: '#4ade80',
+  red: '#ef4444',
+  amber: '#fbbf24',
+  blue: '#60a5fa',
+  pink: '#f472b6',
+  purple: '#c084fc',
+  dim: '#525252',
+  fb: '#1877f2',
+  google: '#ea4335',
+  tiktok: '#ff0050',
+  klaviyo: '#34d399'
+};
+
+const gridConfig = {
+  grid: { color: '#1a1a1a', drawTicks: false },
+  ticks: { padding: 8 },
+  border: { display: false }
+};
+
+const tooltipStyle = {
+  backgroundColor: '#0a0a0a',
+  borderColor: '#262626',
+  borderWidth: 1,
+  titleFont: { family: "'JetBrains Mono', monospace", size: 10, weight: '500' },
+  titleColor: '#a3a3a3',
+  bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
+  bodyColor: '#f5f5f4',
+  padding: 12,
+  cornerRadius: 0,
+  displayColors: true,
+  boxWidth: 8,
+  boxHeight: 8,
+  boxPadding: 6
+};
+
+// ===== 1. SPEND MIX DOUGHNUT =====
+new Chart(document.getElementById('spendMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Meta', 'Google', 'TikTok'],
+    datasets: [{
+      data: [3722659, 1175028, 1070199],
+      backgroundColor: [palette.fb, palette.amber, palette.tiktok],
+      borderColor: '#0a0a0a',
+      borderWidth: 3,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { boxWidth: 10, boxHeight: 10, padding: 16, font: { family: "'JetBrains Mono', monospace", size: 11 } }
+      },
+      tooltip: {
+        ...tooltipStyle,
+        callbacks: {
+          label: (ctx) => ` ${ctx.label}: ${(ctx.parsed/1000).toFixed(0)}K CZK (${(ctx.parsed/5967886*100).toFixed(1)}%)`
+        }
+      }
+    }
+  }
+});
+
+// ===== 2. ROAS BY CHANNEL =====
+new Chart(document.getElementById('roasChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Meta', data: [6.41, 6.37, 6.93, 5.81], borderColor: palette.fb, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: palette.fb },
+      { label: 'Google', data: [21.24, 22.32, 13.73, 18.45], borderColor: palette.amber, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: palette.amber },
+      { label: 'TikTok', data: [7.79, 7.71, 2.10, 12.77], borderColor: palette.tiktok, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: palette.tiktok },
+      { label: 'Blended', data: [5.45, 5.35, 5.37, 5.25], borderColor: palette.accent, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: palette.accent, borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
+      tooltip: { ...tooltipStyle, callbacks: { label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}×` } }
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, beginAtZero: true, ticks: { ...gridConfig.ticks, callback: (v) => v + '×' } }
+    }
+  }
+});
+
+// ===== 3. REVENUE COMPOSITION STACKED BAR =====
+new Chart(document.getElementById('revStackChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Klaviyo (Owned)', data: [3003621, 2918136, 3252232, 3531010], backgroundColor: palette.klaviyo, stack: 'rev', borderRadius: 0 },
+      { label: 'Meta-attributed', data: [5250857, 5562448, 6894614, 6013548].map(v => v*0.45), backgroundColor: palette.fb, stack: 'rev', borderRadius: 0 },
+      { label: 'Google-attributed', data: [6650103, 5725371, 4119312, 5636329].map(v => v*0.18), backgroundColor: palette.amber, stack: 'rev', borderRadius: 0 },
+      { label: 'TikTok-attributed', data: [2081314, 2406390, 2512360, 3065486].map(v => v*0.13), backgroundColor: palette.tiktok, stack: 'rev', borderRadius: 0 },
+      { label: 'Direct / Other', data: [
+        7630185 - 3003621 - 5250857*0.45 - 6650103*0.18 - 2081314*0.13,
+        7719617 - 2918136 - 5562448*0.45 - 5725371*0.18 - 2406390*0.13,
+        8298655 - 3252232 - 6894614*0.45 - 4119312*0.18 - 2512360*0.13,
+        8306593 - 3531010 - 6013548*0.45 - 5636329*0.18 - 3065486*0.13
+      ], backgroundColor: palette.dim, stack: 'rev', borderRadius: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
+      tooltip: { ...tooltipStyle, callbacks: { label: (ctx) => ` ${ctx.dataset.label}: ${(ctx.parsed.y/1000000).toFixed(2)}M CZK` } }
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, stacked: true, ticks: { ...gridConfig.ticks, callback: (v) => (v/1000000).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ===== 4. KLAVIYO FLOWS VS CAMPAIGNS =====
+new Chart(document.getElementById('klaviyoChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Flows', data: [1444616, 1235661, 1203945, 1282429], backgroundColor: palette.pink, borderRadius: 2 },
+      { label: 'Campaigns', data: [1559005, 1682475, 2048286, 2248581], backgroundColor: palette.accent, borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
+      tooltip: { ...tooltipStyle, callbacks: { label: (ctx) => ` ${ctx.dataset.label}: ${(ctx.parsed.y/1000).toFixed(0)}K CZK` } }
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, ticks: { ...gridConfig.ticks, callback: (v) => (v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// ===== 5. CPA TREND =====
+new Chart(document.getElementById('cpaChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      label: 'New Customer CPA',
+      data: [623, 728, 721, 813],
+      borderColor: palette.red,
+      backgroundColor: 'rgba(239,68,68,0.08)',
+      tension: 0.3,
+      fill: true,
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointBackgroundColor: palette.red,
+      pointBorderColor: '#0a0a0a',
+      pointBorderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { ...tooltipStyle, callbacks: { label: (ctx) => ` CPA: ${ctx.parsed.y} CZK` } }
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, ticks: { ...gridConfig.ticks, callback: (v) => v + ' CZK' } }
+    }
+  }
+});
+
+// ===== 6. NEW VS RETURNING =====
+new Chart(document.getElementById('newReturningChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'New Customer Rev', data: [2915470, 2479979, 2658258, 2343869], backgroundColor: palette.blue, borderRadius: 2 },
+      { label: 'Returning Customer Rev', data: [4714715, 5239638, 5640397, 5962724], backgroundColor: palette.green, borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
+      tooltip: { ...tooltipStyle, callbacks: { label: (ctx) => ` ${ctx.dataset.label}: ${(ctx.parsed.y/1000000).toFixed(2)}M CZK` } }
+    },
+    scales: {
+      x: { ...gridConfig, stacked: true },
+      y: { ...gridConfig, stacked: true, ticks: { ...gridConfig.ticks, callback: (v) => (v/1000000).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ===== 7. CR TREND =====
+new Chart(document.getElementById('crChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      label: 'Conversion Rate',
+      data: [1.88, 1.70, 1.96, 2.75],
+      borderColor: palette.accent,
+      backgroundColor: 'rgba(229,255,0,0.10)',
+      tension: 0.3,
+      fill: true,
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointBackgroundColor: palette.accent,
+      pointBorderColor: '#0a0a0a',
+      pointBorderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { ...tooltipStyle, callbacks: { label: (ctx) => ` CR: ${ctx.parsed.y}%` } }
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, beginAtZero: true, ticks: { ...gridConfig.ticks, callback: (v) => v + '%' } }
+    }
+  }
+});
+
+// ===== 8. TRAFFIC VOLATILITY =====
+new Chart(document.getElementById('trafficChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Users', data: [99658, 114880, 100438, 67028], borderColor: palette.purple, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: palette.purple, yAxisID: 'y' },
+      { label: 'Orders', data: [5153, 5105, 5505, 5562], borderColor: palette.green, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: palette.green, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
+      tooltip: { ...tooltipStyle }
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, position: 'left', ticks: { ...gridConfig.ticks, callback: (v) => (v/1000).toFixed(0)+'K' }, title: { display: true, text: 'Users', color: '#525252', font: { size: 9 } } },
+      y1: { ...gridConfig, position: 'right', grid: { drawOnChartArea: false, color: '#1a1a1a' }, title: { display: true, text: 'Orders', color: '#525252', font: { size: 9 } } }
+    }
+  }
+});
+
+// ===== 9. DISCOUNT OVERLAY =====
+new Chart(document.getElementById('discountOverlayChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { type: 'bar', label: 'Order Revenue', data: [7630185, 7719617, 8298655, 8306593], backgroundColor: 'rgba(229,255,0,0.18)', borderColor: palette.accent, borderWidth: 2, borderRadius: 0, yAxisID: 'y' },
+      { type: 'line', label: 'AOV (CZK)', data: [1269, 1297, 1290, 1278], borderColor: palette.blue, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 5, pointBackgroundColor: palette.blue, yAxisID: 'y1' },
+      { type: 'line', label: 'Conversion Rate (%)', data: [1.88, 1.70, 1.96, 2.75], borderColor: palette.green, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 5, pointBackgroundColor: palette.green, yAxisID: 'y2', borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14 } },
+      tooltip: { ...tooltipStyle, callbacks: {
+        afterTitle: (items) => {
+          const events = { Jan: 'NEW YEAR SALE — 15%', Feb: 'FOUNDER DAYS — 20%', Mar: '(no promo)', Apr: 'ENDURANCE START — 2+1' };
+          return events[items[0].label];
+        }
+      }}
+    },
+    scales: {
+      x: gridConfig,
+      y: { ...gridConfig, position: 'left', ticks: { ...gridConfig.ticks, callback: (v) => (v/1000000).toFixed(1)+'M' }, title: { display: true, text: 'Revenue', color: '#525252', font: { size: 9 } } },
+      y1: { ...gridConfig, position: 'right', grid: { drawOnChartArea: false }, ticks: { ...gridConfig.ticks, callback: (v) => v + ' CZK' }, title: { display: true, text: 'AOV', color: '#525252', font: { size: 9 } } },
+      y2: { display: false }
+    }
+  }
+});
+
+</script>
+</body>
+</html>

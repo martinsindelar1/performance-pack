@@ -1,2 +1,8 @@
-.claude/
+# Ignore local Claude Code settings, but keep the project skill tracked
+.claude/*
+!.claude/skills/
 .DS_Store
+
+# The downloaded skill bundle (unpacked into .claude/skills/) — not needed in the repo
+complex-performance-pack.skill
+_working.html
